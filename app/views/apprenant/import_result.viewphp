@@ -1,0 +1,19 @@
+<h2>Résultats de l'importation</h2>
+
+<?php if (!empty($importResults['success'])): ?>
+    <h3>Importations réussies :</h3>
+    <ul>
+        <?php foreach ($importResults['success'] as $success): ?>
+            <li><?= htmlspecialchars($success) ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+<?php if (!empty($importResults['errors'])): ?>
+    <h3>Erreurs :</h3>
+    <ul>
+        <?php foreach ($importResults['errors'] as $error): ?>
+            <li><?= htmlspecialchars($error) ?></li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>

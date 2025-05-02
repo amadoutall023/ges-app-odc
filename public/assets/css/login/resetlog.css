@@ -1,0 +1,49 @@
+/* Exemple de styles pour le formulaire */
+body{
+    width: 100%;
+    height: 100lvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container {
+    max-width: 25%;
+    height: 60%;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+}
+
+.input {
+    margin-top: 10%;
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.logo-img {
+    margin-left: 28%;
+    width: 40%;
+    height: 40%;
+   
+}
+
+.form-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff7a00;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-btn:hover {
+    background-color: #ff7a00;
+}
