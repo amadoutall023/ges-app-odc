@@ -619,4 +619,47 @@ form {
     .list-actions button {
         width: 100%;
     }
+    .form-ajout-apprenant {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+    }
+    
+    .form-ajout-apprenant label {
+        width: 100%;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+    
+    .form-ajout-apprenant input,
+    .form-ajout-apprenant select {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 100%;
+        background-color: #f9f9f9;
+    }
+    
+    .form-ajout-apprenant button[type="submit"] {
+        background-color: var(--color-orange);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: fit-content;
+    }
+    
+    .form-ajout-apprenant button[type="submit"]:hover {
+        background-color: #e75c00;
+    }
+    
 }

@@ -2,9 +2,12 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../enums/validator.enum.php';
 require_once __DIR__ . '/../enums/erreur.enum.php';
-
+require_once __DIR__ . '/../models/model.php';
+require_once __DIR__ . '/../enums/chemin_page.php';
 use App\ENUM\VALIDATOR\ValidatorMethode;
 use App\ENUM\ERREUR\ErreurEnum;
+use App\Models\JSONMETHODE;
+use App\Enums\CheminPage;
 
 global $validator;
 $validator = [
@@ -146,9 +149,9 @@ ValidatorMethode::PROMO->value => function (string $nom): ?string {
         // Filtrer les erreurs non nulles
         return array_filter($errors);
     },
-    ValidatorMethode::INSCRIRE_APPRENANT->value => function (array $data): array {
-        return valider_apprenant($data);
-    },
+    // ValidatorMethode::INSCRIRE_APPRENANT->value => function (array $data): array {
+    //     return valider_apprenant($data);
+    // },
     
     ValidatorMethode::VALIDATE_AFFECTER_REF->value => function (?string $referentielId): void {
         if (empty($referentielId)) {
@@ -161,67 +164,131 @@ ValidatorMethode::PROMO->value => function (string $nom): ?string {
         if (empty($referentielId)) {
             throw new Exception(ErreurEnum::REFERENTIEL_ID_REQUIRED->value);
         }
-    }
+    },
     
+
+
+
+
+
+    VALIDATORMETHODE::APPRENANT->value => function (array $data): array {
+        $errors = [];
+
+        // Nom complet obligatoire
+        if (empty(trim($data['nom_complet'] ?? ''))) {
+            $errors['nom_complet'] = ErreurEnum::APPRENANT_NOM_REQUIRED->value;
+        }
+
+        // // Login obligatoire et valide
+        // if (empty(trim($data['login'] ?? ''))) {
+        //     $errors['login'] = ErreurEnum::APPRENANT_EMAIL_REQUIRED->value;
+        // } else {
+        //     $login = trim($data['login']);
+        //     if (!filter_var($login, FILTER_VALIDATE_EMAIL)) {
+        //         $errors['login'] = ErreurEnum::APPRENANT_EMAIL_INVALID->value;
+        //     }
+        // }
+
+
+
+
+        $login = trim($data['email'] ?? '');
+
+        if ($login === '') {
+            $errors['email'] = ErreurEnum::APPRENANT_EMAIL_REQUIRED->value;
+        } elseif (!filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = ErreurEnum::APPRENANT_EMAIL_INVALID->value;
+        } else {
+            // Vérification de l'unicité
+            $chemin = CheminPage::DATA_JSON->value;
+            global $model_tab;
+            $utilisateurs = $model_tab[JSONMETHODE::JSONTOARRAY->value]($chemin, 'utilisateurs');
+        
+            $loginExiste = array_filter($utilisateurs, fn($u) => isset($u['email']) && strtolower($u['email']) === strtolower($login));
+        
+            if (!empty($loginExiste)) {
+                $errors['email'] = ErreurEnum::APPRENANT_EMAIL_UNIQUE->value;
+            }
+        }
+        
+
+
+
+
+
+
+
+        // Téléphone obligatoire, valide et unique
+        // if (empty(trim($data['telephone'] ?? ''))) {
+        //     $errors['telephone'] = ErreurEnum::APPRENANT_TELEPHONE_REQUIRED->value;
+        // } elseif (!preg_match('/^\d{9}$/', $data['telephone'])) {
+        //     $errors['telephone'] = ErreurEnum::APPRENANT_TELEPHONE_INVALID->value;
+        // } else {
+        //     $chemin = \App\Enums\CheminPage::DATA_JSON->value;
+        //     if (file_exists($chemin)) {
+        //         $contenu = json_decode(file_get_contents($chemin), true);
+        //         $utilisateurs = $contenu['utilisateurs'] ?? [];
+
+        //         $telephoneSaisi = trim($data['telephone']);
+        //         $doublon = array_filter($utilisateurs, fn($u) => ($u['telephone'] ?? '') === $telephoneSaisi);
+
+        //         if (!empty($doublon)) {
+        //             $errors['telephone'] = ErreurEnum::APPRENANT_TELEPHONE_EXISTS->value;
+        //         }
+        //     }
+        // }
+
+
+
+        
+        // Date de naissance obligatoire et format YYYY-MM-DD
+        // if (empty(trim($data['date_naissance'] ?? ''))) {
+        //     $errors['date_naissance'] = ErreurEnum::APPRENANT_DATE_NAISSANCE_REQUIRED->value;
+        // } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data['date_naissance'])) {
+        //     $errors['date_naissance'] = ErreurEnum::APPRENANT_DATE_NAISSANCE_INVALID->value;
+        // }
+
+        // Lieu de naissance obligatoire
+        // if (empty(trim($data['lieu_naissance'] ?? ''))) {
+        //     $errors['lieu_naissance'] = ErreurEnum::APPRENANT_LIEU_NAISSANCE_REQUIRED->value;
+        // }
+
+        // Adresse obligatoire
+        // if (empty(trim($data['adresse'] ?? ''))) {
+        //     $errors['adresse'] = ErreurEnum::APPRENANT_ADRESSE_REQUIRED->value;
+        // }
+
+        // Référentiel obligatoire
+        // if (empty($data['referenciel'])) {
+        //     $errors['referenciel'] = ErreurEnum::APPRENANT_REFERENTIEL_REQUIRED->value;
+        // }
+
+        // Tuteur - Nom obligatoire
+        // if (empty(trim($data['tuteur_nom'] ?? ''))) {
+        //     $errors['tuteur_nom'] = ErreurEnum::APPRENANT_TUTEUR_NOM_REQUIRED->value;
+        // }
+
+        // Tuteur - Lien de parenté obligatoire
+        // if (empty(trim($data['lien_parente'] ?? ''))) {
+        //     $errors['lien_parente'] = ErreurEnum::APPRENANT_LIEN_PARENT_REQUIRED->value;
+        // }
+
+        // Tuteur - Adresse obligatoire
+        // if (empty(trim($data['tuteur_adresse'] ?? ''))) {
+        //     $errors['tuteur_adresse'] = ErreurEnum::APPRENANT_TUTEUR_ADRESSE_REQUIRED->value;
+        // }
+
+        // Tuteur - Téléphone obligatoire et format 9 chiffres
+        // if (empty(trim($data['tuteur_telephone'] ?? ''))) {
+        //     $errors['tuteur_telephone'] = ErreurEnum::APPRENANT_TUTEUR_TELEPHONE_REQUIRED->value;
+        // } elseif (!preg_match('/^\d{9}$/', $data['tuteur_telephone'])) {
+        //     $errors['tuteur_telephone'] = ErreurEnum::APPRENANT_TUTEUR_TELEPHONE_INVALID->value;
+        // }
+
+        return $errors;
+    },
+   
 ];
-
-function valider_apprenant(array $data): array {
-    $erreurs = [];
-
-    // Validation des champs de l'apprenant
-    if (empty($data['prenom'])) {
-        $erreurs['prenom'] = "Le prénom est obligatoire.";
-    }
-
-    if (empty($data['nom'])) {
-        $erreurs['nom'] = "Le nom est obligatoire.";
-    }
-
-    if (empty($data['date_naissance'])) {
-        $erreurs['date_naissance'] = "La date de naissance est obligatoire.";
-    } elseif (!DateTime::createFromFormat('d/m/Y', $data['date_naissance'])) {
-        $erreurs['date_naissance'] = "La date de naissance doit être au format JJ/MM/AAAA.";
-    }
-
-    if (empty($data['lieu_naissance'])) {
-        $erreurs['lieu_naissance'] = "Le lieu de naissance est obligatoire.";
-    }
-
-    if (empty($data['adresse'])) {
-        $erreurs['adresse'] = "L'adresse est obligatoire.";
-    }
-
-    if (empty($data['email'])) {
-        $erreurs['email'] = "L'email est obligatoire.";
-    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        $erreurs['email'] = "L'email n'est pas valide.";
-    }
-
-    if (empty($data['telephone'])) {
-        $erreurs['telephone'] = "Le numéro de téléphone est obligatoire.";
-    }
-
-    // Validation des champs du tuteur
-    if (empty($data['tuteur_nom'])) {
-        $erreurs['tuteur_nom'] = "Le nom du tuteur est obligatoire.";
-    }
-
-    if (empty($data['lien_parente'])) {
-        $erreurs['lien_parente'] = "Le lien de parenté est obligatoire.";
-    }
-
-    if (empty($data['tuteur_adresse'])) {
-        $erreurs['tuteur_adresse'] = "L'adresse du tuteur est obligatoire.";
-    }
-
-    if (empty($data['tuteur_telephone'])) {
-        $erreurs['tuteur_telephone'] = "Le numéro de téléphone du tuteur est obligatoire.";
-    } elseif (!preg_match('/^\+?[0-9\s\-]+$/', $data['tuteur_telephone'])) {
-        $erreurs['tuteur_telephone'] = "Le numéro de téléphone du tuteur n'est pas valide.";
-    }
-
-    return $erreurs;
-}
 
 function clear_errors() {
     if (isset($_SESSION['errors'])) {

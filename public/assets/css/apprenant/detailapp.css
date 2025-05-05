@@ -239,3 +239,91 @@
     font-size: 0.9rem;
     color: #666;
 }
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 1024px) {
+    .topbar {
+       
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+  
+    .profile {
+    
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .contact-info {
+        margin-top: 6%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  
+    .stats-row {
+      flex-direction: column;
+    }
+  
+    .tabs {
+      flex-wrap: wrap;
+    }
+  
+    .course-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      margin-top: 0;
+    }
+  
+    .topbar {
+        margin-top: 6%;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+  
+    .profile {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .profile-info {
+      align-items: flex-start;
+    }
+  
+    .stats-row {
+      flex-direction: column;
+    }
+  
+    .tabs {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .tab {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .course-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .main-content {
+      padding: 1rem;
+    }
+  
+    .action-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+  }
+  

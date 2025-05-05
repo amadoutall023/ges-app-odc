@@ -43,6 +43,7 @@ enum CheminPage: string
     case VIEW_APPRENANT = __DIR__ . '/../views/apprenant/apprenant.view.php';
     case VIEW_AJOUT_APP = __DIR__ . '/../views/apprenant/ajout_app.view.php';
     case VIEW_DETAIL_APP = __DIR__ . '/../views/apprenant/detailapp.view.php';
+    case VIEW_DASHBORD = __DIR__ . '/../views/apprenant/dashbord.view.php';
     case VIEW_IMPORT = __DIR__ . '/../views/apprenant/import_result.view.php';
     case VIEW_AJOUT_REFERENCIEL = __DIR__ . '/../views/referenciel/ajout_ref.view.php';
 
@@ -66,6 +67,8 @@ enum CheminPage: string
     case CSS_APPRENANT = '/assets/css/apprenant/apprenant.css';
     case CSS_AJOUT_APP = '/assets/css/apprenant/ajout_app.css';
     case CSS_DETAILAPP = '/assets/css/apprenant/detailapp.css';
+    case CSS_DASHBORD = '/assets/css/apprenant/dashbord.css';
+    
     
 
     case IMG_LOGO_LOGIN = '/assets/images/login/logo_odc.png';

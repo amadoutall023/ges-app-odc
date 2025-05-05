@@ -13,12 +13,13 @@ use App\ENUM\MESSAGE\MSGENUM;
 
 demarrer_session();
 
+
 if (isset($_GET['page'])) {
     match ($_GET['page']) {
         'login' => voir_page_login(),
         'resetPassword' => voir_page_reset_password(),
         'logout' => logout(),
-        default => null, // optionnel, mais propre
+        default => null,
     };
 }
 
@@ -31,9 +32,18 @@ function voir_page_login(): void {
     }
 }
 
+function voir_page_app() :void {
+
+    
+    render('apprenant/dashbord', [], layout: null);
+    
+}
+
+
 function traiter_connexion(): void {
     global $validator, $auth_model;
-    $chemin_data = CheminPage::DATA_JSON->value;
+    $chemin = CheminPage::DATA_JSON->value;
+
     $login = $_POST['login'] ?? '';
     $password = $_POST['password'] ?? '';
 
@@ -44,19 +54,42 @@ function traiter_connexion(): void {
         return;
     }
 
-    $user = $auth_model[AUTHMETHODE::LOGIN->value]($login, $password, $chemin_data);
+    // Récupérer l'utilisateur uniquement par login (sans vérif du mot de passe ici)
+    $utilisateur = $auth_model[AUTHMETHODE::LOGIN->value]($login, $password, $chemin);
 
-    if ($user) {
-        stocker_session('user', $user);
+    if ($utilisateur && password_verify($password, $utilisateur['password'])) {
+        stocker_session('user', $utilisateur);
+
+        $profil = strtolower($utilisateur['profil'] ?? '');
+        $changer = $utilisateur['changer'] ?? false;
+
+        if ($profil === 'apprenant') {
+            if ($changer === false || $changer === 'false') {
+                render('login/reset_password', [], layout: null);
+                return;
+            }
+
+            render('apprenant/dashbord', ['user' => $utilisateur], layout: null);
+            return;
+        }
+
         redirect_to_route('index.php', ['page' => 'liste_promo']);
-        exit;
     } else {
         stocker_session('errors', ['login' => 'login.incorrect']);
         render('login/login', [], layout: null);
     }
 }
+// stocker_session('errors', ['login' => 'login.incorrect']);
 
-// === PAGE RESET PASSWORD ===
+
+
+// === DECONNEXION ===
+// === DECONNEXION ===
+function logout(): void {
+    demarrer_session();
+    detruire_session();
+    redirect_to_route('index.php');
+}
 function voir_page_reset_password(): void {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         traiter_reset_password();
@@ -64,10 +97,10 @@ function voir_page_reset_password(): void {
         render('login/reset_password', [], layout: null);
     }
 }
-
+//-------------
 function traiter_reset_password(): void {
     global $auth_model;
-    $chemin_data = CheminPage::DATA_JSON->value;
+    $chemin = CheminPage::DATA_JSON->value;
 
     $login = $_POST['login'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -77,21 +110,15 @@ function traiter_reset_password(): void {
         render('login/reset_password', [], layout: null);
         return;
     }
-    $success = $auth_model[AUTHMETHODE::RESET_PASSWORD->value]($login, $password, $chemin_data);
+
+    $motDePasseHashe = password_hash($password, PASSWORD_DEFAULT);
+    $success = $auth_model[AUTHMETHODE::RESET_PASSWORD->value]($login, $motDePasseHashe, $chemin);
 
     if ($success) {
         stocker_session('success', 'Mot de passe modifié avec succès');
-        render('login/login', [], layout: null);
+        redirect_to_route('index.php');
     } else {
         stocker_session('error', 'Email introuvable ou erreur de sauvegarde');
         render('login/reset_password', [], layout: null);
     }
-}
-
-
-// === DECONNEXION ===
-function logout(): void {
-    demarrer_session();
-    detruire_session();
-    redirect_to_route('index.php');
 }

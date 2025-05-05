@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <?php
+
 require_once __DIR__ . '/../../enums/chemin_page.php';
 use App\Enums\CheminPage;
 $url = "http://" . $_SERVER["HTTP_HOST"];
 $css_path = CheminPage::CSS_AJOUT_APP->value;
+
+$erreurs = $_SESSION['errors'] ?? [];
+$old = $_SESSION['old_inputs'] ?? [];
 ?>
 <head>
     <meta charset="UTF-8">
@@ -34,11 +38,12 @@ $css_path = CheminPage::CSS_AJOUT_APP->value;
             <label for="NOM">Prénom(s)</label>
             <input type="text" id="nom_complet" name="nom_complet" value="<?= htmlspecialchars($old['nom_complet'] ?? '') ?>">
             <?php if (!empty($erreurs['nom_complet'])): ?>
-                <p class="error-message"><?= htmlspecialchars($erreurs['prenom']) ?></p>
+                <p class="error-message"><?= htmlspecialchars($erreurs['nom_complet']) ?>
+                </p>
             <?php endif; ?>
           </div>
-        
-        
+        </div>
+
         <div class="form-row">
           <div class="form-field">
             <label for="date_naissance">Date de naissance</label>
@@ -90,7 +95,7 @@ $css_path = CheminPage::CSS_AJOUT_APP->value;
                 <label><input type="radio" name="referenciel" value="DATA" <?= isset($old['referenciel']) && $old['referenciel'] == 'DATA' ? 'checked' : '' ?>> DATA</label>
                 <label><input type="radio" name="referenciel" value="REF DIGITALE" <?= isset($old['referenciel']) && $old['referenciel'] == 'REF DIGITALE' ? 'checked' : '' ?>> REF DIGITALE</label>
                 <?php if (!empty($erreurs['referenciel'])): ?>
-                    <p class="error-message"><?= htmlspecialchars($erreurs['referentiel']) ?></p>
+                    <p class="error-message"><?= htmlspecialchars($erreurs['referenciel']) ?></p>
                 <?php endif; ?>
                 </div>
         <div class="document-upload">

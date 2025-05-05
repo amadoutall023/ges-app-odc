@@ -9,8 +9,6 @@ use App\Models\JSONMETHODE;
 use App\Models\REFMETHODE;
 use App\ENUM\VALIDATOR\ValidatorMethode;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 require_once CheminPage::MODEL->value;
 require_once CheminPage::SESSION_SERVICE->value;
 require_once CheminPage::APPRENANT_MODEL->value;
@@ -153,7 +151,7 @@ function extraire_donnees_apprenant(array $ligne): array {
         'date_naissance' => $ligne[1] ?? '',
         'lieu_naissance' => $ligne[2] ?? '',
         'adresse' => $ligne[3] ?? '',
-        'email' => $ligne[4] ?? '',
+        'login' => $ligne[4] ?? '',
         'telephone' => $ligne[5] ?? '',
         'document' => $ligne[6] ?? '',
         'tuteur_nom' => $ligne[7] ?? '',
@@ -161,7 +159,7 @@ function extraire_donnees_apprenant(array $ligne): array {
         'tuteur_adresse' => $ligne[9] ?? '',
         'tuteur_telephone' => $ligne[10] ?? '',
         'referenciel' => (int)($ligne[11] ?? 0),
-        'password' => password_hash($ligne[12] ?? 'password123', PASSWORD_DEFAULT),
+        'password' => password_hash('password123', PASSWORD_DEFAULT),
         'statut' => 'Retenu',
         'profil' => 'Apprenant'
     ];
@@ -217,7 +215,7 @@ function traiter_ajout_apprenant(): void {
         'date_naissance' => trim($_POST['date_naissance'] ?? ''),
         'lieu_naissance' => trim($_POST['lieu_naissance'] ?? ''),
         'adresse' => trim($_POST['adresse'] ?? ''),
-        'email' => trim($_POST['email'] ?? ''),
+        'login' => trim($_POST['login'] ?? ''),
         'telephone' => trim($_POST['telephone'] ?? ''),
         'referenciel' => $_POST['referenciel'] ?? '',
         'photo' => $_FILES['document'] ?? null
@@ -279,7 +277,7 @@ function creer_donnees_apprenant(array $post): array {
         'date_naissance' => $post['date_naissance'],
         'lieu_naissance' => $post['lieu_naissance'],
         'adresse' => $post['adresse'],
-        'email' => $post['email'],
+        'login' => $post['login'],
         'telephone' => $post['telephone'],
         'referenciel' => (int) $post['referenciel'],
         'photo' => $post['photo']['name'] ?? '', // ou chemin si tu veux upload

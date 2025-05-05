@@ -19,5 +19,13 @@ enum ValidatorMethode: string {
     case VALIDATE_FICHIER_EXCEL = 'validate_fichier_excel';
     case GENERER_MATRICULE = 'generer_matricule';
     case INSCRIRE_APPRENANT = 'inscrire_apprenant';
-   
+    case APPRENANT = 'apprenant';
+    case APPRENANT_NOM_REQUIRED = 'apprenant_nom_required';
+    case DATE_NAISSANCE = 'date_naissance';
+    case LIEU_NAISSANCE = 'lieu_naissance';
+    case ADRESSE = 'adresse';
+    case TELEPHONE = 'telephone';
+    case REFERENTIEL = 'referenciel';
 }
+
+

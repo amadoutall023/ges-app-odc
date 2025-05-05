@@ -17,6 +17,11 @@ match ($page) {
     'resetPassword' => (function () {
         require_once CheminPage::AUTH_CONTROLLER->value;
     })(),
+    'dashbord' => (function () {
+        require_once CheminPage::AUTH_CONTROLLER->value;
+        voir_page_app();
+        exit;
+    })(),
  'form' => (function () {
     require_once CheminPage::PROMO_CONTROLLER->value;
     afficher_formulaire_promotion();

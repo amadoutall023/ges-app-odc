@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Changé de height à min-height */
     background-color: var(--background);
     font-family: Arial, sans-serif;
     padding: 20px;
@@ -28,24 +28,26 @@ body {
 .form-container {
     position: relative;
     width: 100%;
-    height: 70%;
-
-    max-width: 30%;
+    height: auto; /* Changé de 70% à auto */
+    min-height: 400px; /* Ajout d'une hauteur minimale */
+    max-width: 400px; /* Changé de pourcentage à une valeur fixe en pixels */
     background-color: var(--white);
     border-radius: 20px;
     padding: 30px 40px;
     z-index: 1;
 }
-.alert-succes{
-    padding: 10px ;
-    color:    var(--teal);
+
+.alert-succes {
+    padding: 10px;
+    color: var(--teal);
     text-align: center;
     width: 100%;
-    background-color:  rgba(123, 255, 123, 0.2);
-
+    background-color: rgba(123, 255, 123, 0.2);
+    margin-bottom: 15px; /* Ajout d'une marge en bas */
+    border-radius: 8px; /* Ajout d'un border-radius */
 }
-.with-shadow::before,
-.with-shadow::after {
+
+.with-shadow::before, .with-shadow::after {
     content: "";
     position: absolute;
     border-radius: 20px;
@@ -138,6 +140,7 @@ label {
     border-radius: 10px;
     border: 1px solid var(--input-border);
     font-size: 14px;
+    width: 100%; /* S'assure que l'input prend toute la largeur */
 }
 
 .page-link {
@@ -156,7 +159,7 @@ label {
 }
 
 .form-btn {
-    margin-top: 10px;
+    margin-top: 20px; /* Augmenté de 10px à 20px */
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -164,6 +167,7 @@ label {
     color: var(--white);
     font-size: 16px;
     cursor: pointer;
+    width: 100%; /* S'assure que le bouton prend toute la largeur */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: 0.3s;
 }
@@ -172,17 +176,66 @@ label {
     opacity: 0.9;
 }
 
-/* 📱 Responsive */
+/* Media queries améliorées et plus complètes */
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 80%;
+        padding: 25px 30px;
+    }
+    
+    .main-title {
+        font-size: 22px;
+    }
+}
+
 @media (max-width: 480px) {
     .form-container {
+        max-width: 95%;
         padding: 20px;
     }
-
+    
     .main-title {
         font-size: 20px;
+        margin: 15px 0;
     }
-
+    
     .form-btn {
         font-size: 14px;
+        padding: 10px;
+    }
+    
+    .with-shadow::before {
+        top: 5px;
+        right: -5px;
+        border-right-width: 5px;
+    }
+    
+    .with-shadow::after {
+        bottom: -5px;
+        border-bottom-width: 5px;
+    }
+    
+    .logo {
+        height: 30px;
+        width: 120px;
+    }
+    
+    .sonatel-text {
+        font-size: 20px;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 320px) {
+    .form-container {
+        padding: 15px;
+    }
+    
+    .main-title {
+        font-size: 18px;
+    }
+    
+    .input, .form-btn {
+        padding: 8px;
     }
 }

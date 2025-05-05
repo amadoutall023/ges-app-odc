@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'amadoutall/mon-projet',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '61f0d89b6557207abce689cfa67158163236ada0',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'amadoutall/mon-projet' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '61f0d89b6557207abce689cfa67158163236ada0',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
